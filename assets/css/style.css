@@ -1,0 +1,405 @@
+/* =========================
+   ROOT VARIABLES
+========================= */
+
+:root {
+
+    --color-bg: #f1f5f9;
+    --color-card: #ffffff;
+    --color-primary: #2563eb;
+    --color-success: #10b981;
+    --color-warning: #f59e0b;
+    --color-danger: #ef4444;
+
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+
+    --border-color: #e2e8f0;
+
+    --radius: 16px;
+
+    --shadow:
+        0 10px 30px rgba(0,0,0,0.08);
+
+    --transition: 0.3s ease;
+}
+
+/* =========================
+   GLOBAL
+========================= */
+
+body {
+
+    background: var(--color-bg);
+    font-family: 'Segoe UI', sans-serif;
+    color: var(--text-main);
+}
+
+.container {
+    max-width: 1400px;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.custom-navbar {
+
+    background: linear-gradient(
+        135deg,
+        #1e293b,
+        #334155
+    );
+}
+
+.navbar-brand {
+
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.nav-link {
+
+    color: #fff !important;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+
+    opacity: 0.8;
+}
+
+/* =========================
+   PAGE HEADER
+========================= */
+
+.page-header {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 2rem;
+}
+
+.page-header h1 {
+
+    font-size: 2.2rem;
+    font-weight: 800;
+}
+
+/* =========================
+   BUTTON ADD
+========================= */
+
+.btn-add {
+
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 12px 22px;
+
+    background: linear-gradient(
+        135deg,
+        #10b981,
+        #059669
+    );
+
+    color: white;
+    border-radius: 999px;
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition: var(--transition);
+
+    box-shadow: var(--shadow);
+}
+
+.btn-add:hover {
+
+    color: white;
+
+    transform: translateY(-2px);
+}
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.empty-state {
+
+    background: white;
+
+    border-radius: var(--radius);
+
+    padding: 80px 20px;
+
+    text-align: center;
+
+    box-shadow: var(--shadow);
+}
+
+.empty-icon {
+
+    font-size: 5rem;
+    margin-bottom: 20px;
+}
+
+.empty-state h3 {
+
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+/* =========================
+   PRODUCT GRID
+========================= */
+
+.product-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(340px, 1fr));
+
+    gap: 25px;
+}
+
+/* =========================
+   PRODUCT CARD
+========================= */
+
+.product-card {
+
+    background: var(--color-card);
+
+    border-radius: var(--radius);
+
+    overflow: hidden;
+
+    box-shadow: var(--shadow);
+
+    transition: var(--transition);
+}
+
+.product-card:hover {
+
+    transform: translateY(-8px);
+}
+
+.product-image {
+
+    width: 100%;
+    height: 240px;
+
+    overflow: hidden;
+
+    background: #e2e8f0;
+}
+
+.product-image img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.no-image {
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-direction: column;
+
+    color: #94a3b8;
+}
+
+.no-image i {
+
+    font-size: 4rem;
+    margin-bottom: 10px;
+}
+
+/* =========================
+   PRODUCT CONTENT
+========================= */
+
+.product-content {
+
+    padding: 24px;
+}
+
+.product-name {
+
+    font-size: 1.4rem;
+    font-weight: 800;
+
+    margin-bottom: 10px;
+}
+
+.product-description {
+
+    color: var(--text-muted);
+
+    line-height: 1.6;
+
+    margin-bottom: 20px;
+}
+
+.product-info {
+
+    background: #f8fafc;
+
+    border-radius: 12px;
+
+    padding: 16px;
+
+    margin-bottom: 20px;
+}
+
+.product-price {
+
+    color: var(--color-primary);
+
+    font-size: 1.3rem;
+
+    font-weight: 800;
+
+    margin-bottom: 10px;
+}
+
+.product-category {
+
+    color: var(--text-muted);
+}
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+
+.product-actions {
+
+    display: flex;
+    gap: 10px;
+}
+
+.product-actions a {
+
+    flex: 1;
+
+    text-align: center;
+
+    padding: 10px;
+
+    border-radius: 10px;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-weight: 600;
+
+    transition: var(--transition);
+}
+
+.product-actions a:hover {
+
+    transform: translateY(-2px);
+}
+
+.btn-view {
+
+    background: #2563eb;
+}
+
+.btn-edit {
+
+    background: #f59e0b;
+}
+
+.btn-delete {
+
+    background: #ef4444;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+
+    background: #1e293b;
+    color: white;
+
+    padding-top: 50px;
+}
+
+.footer h5 {
+
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.footer a {
+
+    color: #cbd5e1;
+    text-decoration: none;
+}
+
+.footer a:hover {
+
+    color: white;
+}
+
+.social-links {
+
+    display: flex;
+    gap: 15px;
+
+    font-size: 1.2rem;
+}
+
+.footer-bottom {
+
+    text-align: center;
+
+    padding: 20px;
+
+    margin-top: 30px;
+
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+    .page-header {
+
+        flex-direction: column;
+        gap: 20px;
+
+        text-align: center;
+    }
+
+    .product-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .product-actions {
+
+        flex-direction: column;
+    }
+}
