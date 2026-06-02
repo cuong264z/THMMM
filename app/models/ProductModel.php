@@ -4,7 +4,7 @@ class ProductModel
 {
     private $conn;
 
-    private $table_name = "product";
+    private $table_name = "products";
 
     public function __construct($db)
     {
@@ -14,15 +14,15 @@ class ProductModel
     // GET ALL PRODUCTS
     public function getProducts()
     {
-        $query = "SELECT 
+        $query = "SELECT
                     p.id,
                     p.name,
                     p.description,
                     p.price,
                     p.image,
                     c.name AS category_name
-                  FROM " . $this->table_name . " p
-                  LEFT JOIN category c
+                  FROM products p
+                  LEFT JOIN categories c
                   ON p.category_id = c.id
                   ORDER BY p.id DESC";
 
@@ -36,11 +36,11 @@ class ProductModel
     // GET PRODUCT BY ID
     public function getProductById($id)
     {
-        $query = "SELECT 
+        $query = "SELECT
                     p.*,
                     c.name AS category_name
-                  FROM product p
-                  LEFT JOIN category c
+                  FROM products p
+                  LEFT JOIN categories c
                   ON p.category_id = c.id
                   WHERE p.id = :id";
 
@@ -87,7 +87,7 @@ class ProductModel
             return $errors;
         }
 
-        $query = "INSERT INTO product
+        $query = "INSERT INTO products
                   (
                     name,
                     description,
@@ -107,13 +107,9 @@ class ProductModel
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(':name', $name);
-
         $stmt->bindParam(':description', $description);
-
         $stmt->bindParam(':price', $price);
-
         $stmt->bindParam(':category_id', $category_id);
-
         $stmt->bindParam(':image', $image);
 
         return $stmt->execute();
@@ -131,7 +127,7 @@ class ProductModel
     {
         if ($image === null)
         {
-            $query = "UPDATE product
+            $query = "UPDATE products
                       SET
                         name = :name,
                         description = :description,
@@ -143,7 +139,7 @@ class ProductModel
         }
         else
         {
-            $query = "UPDATE product
+            $query = "UPDATE products
                       SET
                         name = :name,
                         description = :description,
@@ -158,13 +154,9 @@ class ProductModel
         }
 
         $stmt->bindParam(':id', $id);
-
         $stmt->bindParam(':name', $name);
-
         $stmt->bindParam(':description', $description);
-
         $stmt->bindParam(':price', $price);
-
         $stmt->bindParam(':category_id', $category_id);
 
         return $stmt->execute();
@@ -173,7 +165,7 @@ class ProductModel
     // DELETE PRODUCT
     public function deleteProduct($id)
     {
-        $query = "DELETE FROM product
+        $query = "DELETE FROM products
                   WHERE id = :id";
 
         $stmt = $this->conn->prepare($query);
@@ -194,7 +186,6 @@ class ProductModel
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(':product_id', $product_id);
-
         $stmt->bindParam(':image', $image);
 
         return $stmt->execute();

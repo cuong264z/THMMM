@@ -1,13 +1,12 @@
 <?php
 
 require_once('app/config/database.php');
-
 require_once('app/models/CategoryModel.php');
+require_once('app/helpers/SessionHelper.php');
 
 class CategoryController
 {
     private $categoryModel;
-
     private $db;
 
     public function __construct()
@@ -15,6 +14,12 @@ class CategoryController
         $this->db = (new Database())->getConnection();
 
         $this->categoryModel = new CategoryModel($this->db);
+
+        // CHỈ ADMIN ĐƯỢC QUẢN LÝ DANH MỤC
+        if (!SessionHelper::isAdmin())
+        {
+            die('Bạn không có quyền truy cập chức năng này!');
+        }
     }
 
     // LIST
@@ -54,7 +59,8 @@ class CategoryController
     // SHOW EDIT FORM
     public function edit($id)
     {
-        $category = $this->categoryModel->getCategoryById($id);
+        $category =
+            $this->categoryModel->getCategoryById($id);
 
         include 'app/views/category/edit.php';
     }

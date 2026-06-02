@@ -4,7 +4,7 @@ class CategoryModel
 {
     private $conn;
 
-    private $table_name = "category";
+    private $table_name = "categories";
 
     public function __construct($db)
     {
@@ -70,9 +70,7 @@ class CategoryModel
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(':id', $id);
-
         $stmt->bindParam(':name', $name);
-
         $stmt->bindParam(':description', $description);
 
         return $stmt->execute();

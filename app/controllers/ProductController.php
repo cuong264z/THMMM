@@ -4,6 +4,7 @@ require_once('app/config/database.php');
 require_once('app/models/ProductModel.php');
 require_once('app/models/CategoryModel.php');
 require_once('app/helpers/RedisHelper.php');
+require_once('app/helpers/SessionHelper.php');
 
 class ProductController
 {
@@ -56,6 +57,11 @@ class ProductController
     // =========================
     public function add()
     {
+        if (!SessionHelper::isAdmin())
+        {
+            die('Bạn không có quyền truy cập!');
+        }
+
         $categories =
             (new CategoryModel($this->db))
             ->getCategories();
@@ -68,6 +74,10 @@ class ProductController
     // =========================
     public function save()
     {
+        if (!SessionHelper::isAdmin())
+        {
+        die('Bạn không có quyền thực hiện chức năng này!');
+        }
         if ($_SERVER['REQUEST_METHOD'] == 'POST')
         {
             $name = $_POST['name'] ?? '';
@@ -172,6 +182,11 @@ class ProductController
     // =========================
     public function edit($id)
     {
+        if (!SessionHelper::isAdmin())
+        {
+            die('Bạn không có quyền chỉnh sửa!');
+        }
+
         $product =
             $this->productModel->getProductById($id);
 
@@ -187,6 +202,10 @@ class ProductController
     // =========================
     public function update()
     {
+        if (!SessionHelper::isAdmin())
+        {
+            die('Bạn không có quyền cập nhật!');
+        }
         if ($_SERVER['REQUEST_METHOD'] == 'POST')
         {
             $id = $_POST['id'];
@@ -292,6 +311,10 @@ class ProductController
     // =========================
     public function delete($id)
     {
+        if (!SessionHelper::isAdmin())
+        {
+            die('Bạn không có quyền xóa!');
+        }
         $product =
             $this->productModel->getProductById($id);
 
