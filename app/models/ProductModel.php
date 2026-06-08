@@ -3,7 +3,6 @@
 class ProductModel
 {
     private $conn;
-
     private $table_name = "products";
 
     public function __construct($db)
@@ -27,7 +26,6 @@ class ProductModel
                   ORDER BY p.id DESC";
 
         $stmt = $this->conn->prepare($query);
-
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -45,9 +43,7 @@ class ProductModel
                   WHERE p.id = :id";
 
         $stmt = $this->conn->prepare($query);
-
         $stmt->bindParam(':id', $id);
-
         $stmt->execute();
 
         return $stmt->fetch(PDO::FETCH_OBJ);
@@ -64,28 +60,26 @@ class ProductModel
     {
         $errors = [];
 
-        if (empty($name))
-        {
-            $errors['name'] =
-                'Tên sản phẩm không được để trống';
+        if (empty($name)) {
+            $errors['name'] = 'Tên sản phẩm không được để trống';
         }
 
-        if (empty($description))
-        {
-            $errors['description'] =
-                'Mô tả không được để trống';
+        if (empty($description)) {
+            $errors['description'] = 'Mô tả không được để trống';
         }
 
-        if (!is_numeric($price) || $price < 0)
-        {
-            $errors['price'] =
-                'Giá sản phẩm không hợp lệ';
+        if (!is_numeric($price) || $price < 0) {
+            $errors['price'] = 'Giá sản phẩm không hợp lệ';
         }
 
-        if (count($errors) > 0)
-        {
+        if (count($errors) > 0) {
             return $errors;
         }
+
+        $name = htmlspecialchars(strip_tags($name));
+        $description = htmlspecialchars(strip_tags($description));
+        $price = htmlspecialchars(strip_tags($price));
+        $category_id = htmlspecialchars(strip_tags($category_id));
 
         $query = "INSERT INTO products
                   (
@@ -112,7 +106,11 @@ class ProductModel
         $stmt->bindParam(':category_id', $category_id);
         $stmt->bindParam(':image', $image);
 
-        return $stmt->execute();
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
     }
 
     // UPDATE PRODUCT
@@ -125,8 +123,13 @@ class ProductModel
         $image = null
     )
     {
-        if ($image === null)
-        {
+        $name = htmlspecialchars(strip_tags($name));
+        $description = htmlspecialchars(strip_tags($description));
+        $price = htmlspecialchars(strip_tags($price));
+        $category_id = htmlspecialchars(strip_tags($category_id));
+
+        if ($image === null) {
+
             $query = "UPDATE products
                       SET
                         name = :name,
@@ -136,9 +139,9 @@ class ProductModel
                       WHERE id = :id";
 
             $stmt = $this->conn->prepare($query);
-        }
-        else
-        {
+
+        } else {
+
             $query = "UPDATE products
                       SET
                         name = :name,
@@ -159,7 +162,11 @@ class ProductModel
         $stmt->bindParam(':price', $price);
         $stmt->bindParam(':category_id', $category_id);
 
-        return $stmt->execute();
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
     }
 
     // DELETE PRODUCT
@@ -172,7 +179,11 @@ class ProductModel
 
         $stmt->bindParam(':id', $id);
 
-        return $stmt->execute();
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
     }
 
     // ADD SUB IMAGE
