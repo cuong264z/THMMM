@@ -1,0 +1,13 @@
+# Thư viện tải về (rất nặng, người khác tải code về sẽ tự cài lại)
+/node_modules/
+/vendor/
+
+# File cấu hình chứa mật khẩu, database
+.env
+
+# Các file log hệ thống sinh ra
+*.log
+
+# File rác do hệ điều hành tự sinh ra
+.DS_Store
+Thumbs.db

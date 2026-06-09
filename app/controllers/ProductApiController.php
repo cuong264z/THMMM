@@ -3,29 +3,58 @@
 require_once('app/config/database.php');
 require_once('app/models/ProductModel.php');
 require_once('app/models/CategoryModel.php');
+require_once __DIR__ . '/../utils/JWTHandler.php';
 
 class ProductApiController
 {
     private $productModel;
     private $db;
+    private $jwtHandler;
 
     public function __construct()
     {
-        $this->db = (new Database())->getConnection();
+        $this->db           = (new Database())->getConnection();
         $this->productModel = new ProductModel($this->db);
+        $this->jwtHandler   = new JWTHandler();
     }
 
-    // Lấy danh sách sản phẩm
+    // Xác thực JWT
+    private function authenticate()
+    {
+        $headers = apache_request_headers();
+
+        if (isset($headers['Authorization']))
+        {
+            $arr = explode(" ", $headers['Authorization']);
+            $jwt = $arr[1] ?? null;
+
+            if ($jwt)
+            {
+                $decoded = $this->jwtHandler->decode($jwt);
+                return $decoded ? true : false;
+            }
+        }
+
+        return false;
+    }
+
+    // Lấy danh sách sản phẩm (yêu cầu JWT)
     public function index()
     {
-        header('Content-Type: application/json');
-
-        $products = $this->productModel->getProducts();
-
-        echo json_encode($products);
+        if ($this->authenticate())
+        {
+            header('Content-Type: application/json');
+            $products = $this->productModel->getProducts();
+            echo json_encode($products, JSON_UNESCAPED_UNICODE);
+        }
+        else
+        {
+            http_response_code(401);
+            echo json_encode(['message' => 'Unauthorized']);
+        }
     }
 
-    // Lấy thông tin sản phẩm theo ID
+    // Lấy sản phẩm theo ID
     public function show($id)
     {
         header('Content-Type: application/json');
@@ -34,15 +63,12 @@ class ProductApiController
 
         if ($product)
         {
-            echo json_encode($product);
+            echo json_encode($product, JSON_UNESCAPED_UNICODE);
         }
         else
         {
             http_response_code(404);
-
-            echo json_encode([
-                'message' => 'Product not found'
-            ]);
+            echo json_encode(['message' => 'Product not found']);
         }
     }
 
@@ -51,83 +77,55 @@ class ProductApiController
     {
         header('Content-Type: application/json');
 
-        $data = json_decode(
-            file_get_contents("php://input"),
-            true
-        );
-
-        $name = $data['name'] ?? '';
+        $data        = json_decode(file_get_contents("php://input"), true);
+        $name        = $data['name'] ?? '';
         $description = $data['description'] ?? '';
-        $price = $data['price'] ?? '';
+        $price       = $data['price'] ?? '';
         $category_id = $data['category_id'] ?? null;
 
         $result = $this->productModel->addProduct(
-            $name,
-            $description,
-            $price,
-            $category_id,
-            null
+            $name, $description, $price, $category_id, null
         );
 
         if (is_array($result))
         {
             http_response_code(400);
-
-            echo json_encode([
-                'errors' => $result
-            ]);
+            echo json_encode(['errors' => $result]);
         }
         else
         {
             http_response_code(201);
-
-            echo json_encode([
-                'message' => 'Product created successfully'
-            ]);
+            echo json_encode(['message' => 'Product created successfully']);
         }
     }
 
-    // Cập nhật sản phẩm theo ID
+    // Cập nhật sản phẩm
     public function update($id)
     {
         header('Content-Type: application/json');
 
-        $data = json_decode(
-            file_get_contents("php://input"),
-            true
-        );
-
-        $name = $data['name'] ?? '';
+        $data        = json_decode(file_get_contents("php://input"), true);
+        $name        = $data['name'] ?? '';
         $description = $data['description'] ?? '';
-        $price = $data['price'] ?? '';
+        $price       = $data['price'] ?? '';
         $category_id = $data['category_id'] ?? null;
 
         $result = $this->productModel->updateProduct(
-            $id,
-            $name,
-            $description,
-            $price,
-            $category_id,
-            null
+            $id, $name, $description, $price, $category_id, null
         );
 
         if ($result)
         {
-            echo json_encode([
-                'message' => 'Product updated successfully'
-            ]);
+            echo json_encode(['message' => 'Product updated successfully']);
         }
         else
         {
             http_response_code(400);
-
-            echo json_encode([
-                'message' => 'Product update failed'
-            ]);
+            echo json_encode(['message' => 'Product update failed']);
         }
     }
 
-    // Xóa sản phẩm theo ID
+    // Xóa sản phẩm
     public function destroy($id)
     {
         header('Content-Type: application/json');
@@ -136,19 +134,13 @@ class ProductApiController
 
         if ($result)
         {
-            echo json_encode([
-                'message' => 'Product deleted successfully'
-            ]);
+            echo json_encode(['message' => 'Product deleted successfully']);
         }
         else
         {
             http_response_code(400);
-
-            echo json_encode([
-                'message' => 'Product deletion failed'
-            ]);
+            echo json_encode(['message' => 'Product deletion failed']);
         }
     }
 }
-
 ?>

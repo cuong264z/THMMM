@@ -5,8 +5,10 @@ class SessionHelper
     // Khởi động session nếu chưa bắt đầu
     public static function start()
     {
-        if (session_status() == PHP_SESSION_NONE)
+            if (session_status() == PHP_SESSION_NONE)
         {
+            ini_set('session.save_handler', 'files');
+            ini_set('session.save_path', 'C:/Windows/Temp');
             session_start();
         }
     }

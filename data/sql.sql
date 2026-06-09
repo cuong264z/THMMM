@@ -68,48 +68,24 @@ CREATE TABLE order_details (
     ON DELETE CASCADE
 );
 
--- SAMPLE DATA
-INSERT INTO categories(name, description)
-VALUES
-('Laptop','Laptop các loại'),
-('Điện thoại','Smartphone'),
-('Phụ kiện','Thiết bị phụ kiện');
-
-INSERT INTO products (
-    name,
-    description,
-    price,
-    image,
-    category_id
-)
-VALUES
-(
-    'Macbook Pro M3',
-    'Laptop Apple',
-    45000000,
-    'macbook.jpg',
-    1
-),
-(
-    'iPhone 15 Pro Max',
-    'Điện thoại Apple',
-    32000000,
-    'iphone.jpg',
-    2
-),
-(
-    'AirPods Pro',
-    'Tai nghe Apple',
-    6500000,
-    'airpods.jpg',
-    3
+-- ACCOUNT
+CREATE TABLE account (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    fullname VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('admin', 'user') DEFAULT 'user'
 );
 
+-- SAMPLE DATA
+INSERT INTO categories (name, description)
+VALUES
+    ('Laptop', 'Laptop các loại'),
+    ('Điện thoại', 'Smartphone'),
+    ('Phụ kiện', 'Thiết bị phụ kiện');
 
-CREATE TABLE account (
-id INT AUTO_INCREMENT PRIMARY KEY,
-username VARCHAR(255) NOT NULL UNIQUE,
-fullname VARCHAR(255) NOT NULL,
-password VARCHAR(255) NOT NULL,
-role ENUM('admin', 'user') DEFAULT 'user'
-);ACCOUNT
+INSERT INTO products (name, description, price, image, category_id)
+VALUES
+    ('Macbook Pro M3', 'Laptop Apple', 45000000, 'macbook.jpg', 1),
+    ('iPhone 15 Pro Max', 'Điện thoại Apple', 32000000, 'iphone.jpg', 2),
+    ('AirPods Pro', 'Tai nghe Apple', 6500000, 'airpods.jpg', 3);

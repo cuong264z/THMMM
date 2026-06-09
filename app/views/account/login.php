@@ -10,13 +10,9 @@
                     Đăng nhập
                 </h2>
 
-                <?php if(isset($error)): ?>
-                    <div class="alert alert-danger">
-                        <?php echo $error; ?>
-                    </div>
-                <?php endif; ?>
+                <div id="error-message" class="alert alert-danger" style="display:none;"></div>
 
-                <form action="/Account/checkLogin" method="post">
+                <form id="login-form">
                     <div class="form-group mb-3">
                         <label>Tên đăng nhập</label>
                         <input type="text" name="username" class="form-control form-control-lg" required>
@@ -45,6 +41,7 @@
                         <i class="fab fa-github me-2"></i> Đăng nhập bằng GitHub
                     </a>
                 </div>
+
                 <div class="text-center mt-4">
                     Chưa có tài khoản?
                     <a href="/Account/register">Đăng ký ngay</a>
@@ -54,5 +51,36 @@
         </div>
     </div>
 </div>
+
+<script>
+document.getElementById('login-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const formData = new FormData(this);
+    const jsonData = {};
+    formData.forEach((value, key) => { jsonData[key] = value; });
+
+    fetch('/Account/checkLogin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(jsonData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.token) {
+            localStorage.setItem('jwtToken', data.token);
+            location.href = '/Product';
+        } else {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.style.display = 'block';
+            errorDiv.textContent = data.message ?? 'Đăng nhập thất bại!';
+        }
+    })
+    .catch(error => {
+        console.error(error);
+        alert('Có lỗi xảy ra, vui lòng thử lại!');
+    });
+});
+</script>
 
 <?php include 'app/views/shares/footer.php'; ?>
